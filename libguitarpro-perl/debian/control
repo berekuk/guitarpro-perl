@@ -1,0 +1,12 @@
+Source: libguitarpro-perl
+Section: libs
+Priority: extra
+Maintainer: Vyacheslav Matjukhin <mmcleric@gmail.com>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: libguitarpro-perl
+Architecture: all
+Depends: ${perl:Depends}
+Description: GuitarPro files reader
+ This package contains perl modules which can read files in GuitarPro format.
