@@ -1,5 +1,6 @@
 test:
 	for f in `find GuitarPro -name '*.pm'`; do perl -c $$f; done
+	prove t/*.t
 
 install:
 	mkdir -p $(DESTDIR)/usr/share/perl5

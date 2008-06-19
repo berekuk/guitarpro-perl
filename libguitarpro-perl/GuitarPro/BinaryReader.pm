@@ -1,5 +1,8 @@
 package GuitarPro::BinaryReader;
 
+use strict;
+use warnings;
+
 sub new($$)
 {
     my ($class, $bytes) = @_;

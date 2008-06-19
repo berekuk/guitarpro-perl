@@ -1,4 +1,7 @@
-package GuitarPro::Reader;
+package GuitarPro::Piece;
+
+use strict;
+use warnings;
 
 use GuitarPro::BinaryReader;
 
@@ -19,6 +22,12 @@ sub new($$)
         version => $version_string,
     };
     return bless $self => $class;
+}
+
+sub version($)
+{
+    my ($self) = @_;
+    return $self->{version};
 }
 
 1;
