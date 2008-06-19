@@ -13,10 +13,10 @@ sub new($$)
     my $binary_reader = new GuitarPro::BinaryReader($bytes);
 
     my $version_string = $binary_reader->readStringByte(30);
-    print $version_string;
 
     my $self = {
         bytes => $bytes,
+        version => $version_string,
     };
     return bless $self => $class;
 }
