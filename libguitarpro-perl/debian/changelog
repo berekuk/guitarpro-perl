@@ -1,3 +1,11 @@
+libguitarpro-perl (0.0.3) unstable; urgency=low
+
+  * read information about piece
+    (http://dguitar.sourceforge.net/GP4format.html#Information_About_the_Piece)
+    and dynamically create accessors for all required fields
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Fri, 20 Jun 2008 03:02:36 +0400
+
 libguitarpro-perl (0.0.2) unstable; urgency=low
 
   * GuitarPro::Reader renamed to GuitarPro::Piece

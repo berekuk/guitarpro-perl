@@ -21,6 +21,14 @@ sub readUnsignedByte($)
     return $byte;
 }
 
+sub readInt($$)
+{
+    my ($self) = @_;
+    my $int = unpack "x$self->{position}I", $self->{bytes};
+    $self->{position} += 4;
+    return $int;
+}
+
 sub readBytes($$)
 {
     my ($self, $count) = @_;
@@ -33,6 +41,7 @@ sub readStringByte($;$)
 {
     my ($self, $expected_length) = @_;
     my $real_length = $self->readUnsignedByte();
+    $expected_length ||= $real_length;
     my $string = $self->readBytes($expected_length);
     $string = substr($string, 0, $real_length);
     return $string;
