@@ -1,3 +1,11 @@
+libguitarpro-perl (0.0.4) unstable; urgency=low
+
+  * read lyrics (http://dguitar.sourceforge.net/GP4format.html#Lyrics)
+  * read other information about piece
+    (http://dguitar.sourceforge.net/GP4format.html#Other_information_about_the_piece)
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Sat, 21 Jun 2008 00:00:28 +0400
+
 libguitarpro-perl (0.0.3) unstable; urgency=low
 
   * read information about piece

@@ -16,17 +16,25 @@ sub new($$)
 sub readUnsignedByte($)
 {
     my ($self) = @_;
-    my $byte = unpack "x$self->{position}c1", $self->{bytes};
+    my $byte = unpack "x$self->{position}C1", $self->{bytes};
     $self->{position}++;
     return $byte;
 }
 
-sub readInt($$)
+sub readInt($)
 {
     my ($self) = @_;
     my $int = unpack "x$self->{position}I", $self->{bytes};
     $self->{position} += 4;
     return $int;
+}
+
+sub readByte($)
+{
+    my ($self) = @_;
+    my $byte = unpack "x$self->{position}c1", $self->{bytes};
+    $self->{position}++;
+    return $byte;
 }
 
 sub readBytes($$)
