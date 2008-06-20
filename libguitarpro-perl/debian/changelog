@@ -1,3 +1,9 @@
+libguitarpro-perl (0.0.5) unstable; urgency=low
+
+  * read measures (http://dguitar.sourceforge.net/GP4format.html#Measures)
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Sat, 21 Jun 2008 03:45:52 +0400
+
 libguitarpro-perl (0.0.4) unstable; urgency=low
 
   * read lyrics (http://dguitar.sourceforge.net/GP4format.html#Lyrics)

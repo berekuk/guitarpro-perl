@@ -5,6 +5,16 @@ use warnings;
 
 use GuitarPro::BinaryReader;
 
+use constant {
+    MEASURE_NUMERATOR => 0,
+    MEASURE_DENOMINATOR => 1,
+    MEASURE_BEGIN_REPEAT => 2,
+    MEASURE_END_REPEAT => 3,
+    MEASURE_ALT_ENDING_NUMBER => 4,
+    MEASURE_MARKER => 5,
+    MEASURE_TONALITY => 6,
+    MEASURE_DOUBLE_BAR => 7,
+};
 my @INFO_FIELDS = qw(title subtitle interpret album author copyright tab_author instructional);
 
 {
@@ -72,8 +82,39 @@ sub new($$)
         $binary_reader->readByte();
         push @{$self->{midi_channels}}, $channel;
     }
-    $self->{measures_number} = $binary_reader->readInt();
-    $self->{tracks_number} = $binary_reader->readInt();
+    $self->{measures_count} = $binary_reader->readInt();
+    $self->{tracks_count} = $binary_reader->readInt();
+
+    ### BODY ###
+    # measures
+    $self->{measures} = [];
+    for my $i (0..$self->{measures_count}) {
+        my $measure = {};
+        my $header = $binary_reader->readByte();
+        my @bits = unpack "b8", $header;
+        $measure->{header} = [@bits]; # TODO - define constants naming each flag
+        if ($bits[MEASURE_NUMERATOR]) {
+            $measure->{numerator} = $binary_reader->readByte();
+        }
+        if ($bits[MEASURE_DENOMINATOR]) {
+            $measure->{denominator} = $binary_reader->readByte();
+        }
+        if ($bits[MEASURE_END_REPEAT]) {
+            $measure->{repeats_count} = $binary_reader->readByte();
+        }
+        if ($bits[MEASURE_ALT_ENDING_NUMBER]) {
+            $measure->{alt_ending_number} = $binary_reader->readByte();
+        }
+        if ($bits[MEASURE_MARKER]) {
+            $binary_reader->readInt(); # marker name length
+            $measure->{marker} = $binary_reader->readStringByte();
+            $measure->{marker_color} = $binary_reader->readInt(); # TODO - write readColor() method
+        }
+        if ($bits[MEASURE_TONALITY]) {
+            $measure->{tonality} = $binary_reader->readByte();
+        }
+        push @{$self->{measures}}, $measure;
+    }
 
     return bless $self => $class;
 }
