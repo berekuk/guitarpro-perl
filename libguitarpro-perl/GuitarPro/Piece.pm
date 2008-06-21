@@ -5,28 +5,9 @@ use warnings;
 
 use GuitarPro::BinaryReader;
 
-use constant {
-    MEASURE_NUMERATOR => 0,
-    MEASURE_DENOMINATOR => 1,
-    MEASURE_BEGIN_REPEAT => 2,
-    MEASURE_END_REPEAT => 3,
-    MEASURE_ALT_ENDING_NUMBER => 4,
-    MEASURE_MARKER => 5,
-    MEASURE_TONALITY => 6,
-    MEASURE_DOUBLE_BAR => 7,
-};
-my @INFO_FIELDS = qw(title subtitle interpret album author copyright tab_author instructional);
-
-{
-    no strict 'refs';
-    for (@INFO_FIELDS) {
-        *{"$_"} = sub($) {
-            my ($self) = @_;
-            return $self->{$_};
-        };
-    }
-    use strict;
-}
+use GuitarPro::MidiChannel;
+use GuitarPro::Measure;
+use GuitarPro::Info;
 
 sub new($$)
 {
@@ -46,11 +27,7 @@ sub new($$)
     my $version_string = $binary_reader->readStringByte(30);
     $self->{version} = $version_string;
 
-    # information about piece
-    for (@INFO_FIELDS) {
-        $binary_reader->readInt(); # just skip it
-        $self->{$_} = $binary_reader->readStringByte();
-    }
+    $self->{info} = GuitarPro::Info->load($binary_reader);
 
     # lyrics
     my $lyrics_track = $binary_reader->readInt();
@@ -70,16 +47,7 @@ sub new($$)
 
     $self->{midi_channels} = [];
     for my $i (0..63) {
-        my $channel = {};
-        $channel->{instrument} = $binary_reader->readInt();
-        $channel->{volume} = $binary_reader->readByte();
-        $channel->{balance} = $binary_reader->readByte();
-        $channel->{chorus} = $binary_reader->readByte();
-        $channel->{reverb} = $binary_reader->readByte();
-        $channel->{phaser} = $binary_reader->readByte();
-        $channel->{tremolo} = $binary_reader->readByte();
-        $binary_reader->readByte(); # backward compatibility with 3.0
-        $binary_reader->readByte();
+        my $channel = GuitarPro::MidiChannel->load($binary_reader);
         push @{$self->{midi_channels}}, $channel;
     }
     $self->{measures_count} = $binary_reader->readInt();
@@ -89,30 +57,7 @@ sub new($$)
     # measures
     $self->{measures} = [];
     for my $i (0..$self->{measures_count}) {
-        my $measure = {};
-        my $header = $binary_reader->readByte();
-        my @bits = unpack "b8", $header;
-        $measure->{header} = [@bits]; # TODO - define constants naming each flag
-        if ($bits[MEASURE_NUMERATOR]) {
-            $measure->{numerator} = $binary_reader->readByte();
-        }
-        if ($bits[MEASURE_DENOMINATOR]) {
-            $measure->{denominator} = $binary_reader->readByte();
-        }
-        if ($bits[MEASURE_END_REPEAT]) {
-            $measure->{repeats_count} = $binary_reader->readByte();
-        }
-        if ($bits[MEASURE_ALT_ENDING_NUMBER]) {
-            $measure->{alt_ending_number} = $binary_reader->readByte();
-        }
-        if ($bits[MEASURE_MARKER]) {
-            $binary_reader->readInt(); # marker name length
-            $measure->{marker} = $binary_reader->readStringByte();
-            $measure->{marker_color} = $binary_reader->readInt(); # TODO - write readColor() method
-        }
-        if ($bits[MEASURE_TONALITY]) {
-            $measure->{tonality} = $binary_reader->readByte();
-        }
+        my $measure = GuitarPro::Measure->load($binary_reader);
         push @{$self->{measures}}, $measure;
     }
 

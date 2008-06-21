@@ -1,3 +1,9 @@
+libguitarpro-perl (0.0.6) unstable; urgency=low
+
+  * MidiChannel, Measure, Info are separate packages now
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Sat, 21 Jun 2008 04:03:11 +0400
+
 libguitarpro-perl (0.0.5) unstable; urgency=low
 
   * read measures (http://dguitar.sourceforge.net/GP4format.html#Measures)
