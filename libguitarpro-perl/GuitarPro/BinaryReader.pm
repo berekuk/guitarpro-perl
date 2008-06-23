@@ -21,6 +21,14 @@ sub readUnsignedByte($)
     return $byte;
 }
 
+sub readShort($)
+{
+    my ($self) = @_;
+    my $short = unpack "x$self->{position}S", $self->{bytes};
+    $self->{position} += 2;
+    return $short;
+}
+
 sub readInt($)
 {
     my ($self) = @_;

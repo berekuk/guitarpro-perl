@@ -5,9 +5,11 @@ use warnings;
 
 use GuitarPro::BinaryReader;
 
+use GuitarPro::Info;
 use GuitarPro::MidiChannel;
 use GuitarPro::Measure;
-use GuitarPro::Info;
+use GuitarPro::Track;
+use GuitarPro::MeasureTrackPair;
 
 sub new($$)
 {
@@ -54,13 +56,36 @@ sub new($$)
     $self->{tracks_count} = $binary_reader->readInt();
 
     ### BODY ###
+
     # measures
     $self->{measures} = [];
-    for my $i (0..$self->{measures_count}) {
+    for my $i (0..($self->{measures_count} - 1)) {
         my $measure = GuitarPro::Measure->load($binary_reader);
         push @{$self->{measures}}, $measure;
     }
 
+    # tracks
+    $self->{tracks} = [];
+    for my $i (0..($self->{tracks_count} - 1)) {
+        my $track = GuitarPro::Track->load($binary_reader);
+        push @{$self->{tracks}}, $track;
+    }
+
+    # measure-track pairs, beats
+    $self->{mtp} = [];
+    my $mtp_count = $self->{measures_count} * $self->{tracks_count};
+#    print "mtp: $mtp_count\n";
+    for my $i (0..($mtp_count - 1)) {
+#        print "reading $i\n";
+        eval {
+            push @{$self->{mtp}}, GuitarPro::MeasureTrackPair->load($binary_reader);
+        }; if ($@) {
+            warn $@;
+            last;
+        }
+    }
+
+    delete $self->{bytes};
     return bless $self => $class;
 }
 
@@ -68,6 +93,24 @@ sub version($)
 {
     my ($self) = @_;
     return $self->{version};
+}
+
+sub info($)
+{
+    my ($self) = @_;
+    return $self->{info};
+}
+
+sub measures_count($)
+{
+    my ($self) = @_;
+    return $self->{measures_count};
+}
+
+sub measure($$)
+{
+    my ($self, $id) = @_;
+    return $self->{measures}[$id];
 }
 
 1;

@@ -20,7 +20,7 @@ sub load($$)
     die "Strange reader class" unless $binary_reader->isa('GuitarPro::BinaryReader');
     my $measure = {};
     my $header = $binary_reader->readByte();
-    my @bits = unpack "b8", $header;
+    my @bits = split "", unpack "b8", chr($header);
     $measure->{header} = [@bits]; # TODO - define constants naming each flag
     if ($bits[MEASURE_NUMERATOR]) {
         $measure->{numerator} = $binary_reader->readByte();
@@ -40,6 +40,7 @@ sub load($$)
         $measure->{marker_color} = $binary_reader->readInt(); # TODO - write readColor() method
     }
     if ($bits[MEASURE_TONALITY]) {
+        $measure->{tonality_type} = $binary_reader->readByte();
         $measure->{tonality} = $binary_reader->readByte();
     }
     return bless $measure => $class;

@@ -1,3 +1,11 @@
+libguitarpro-perl (0.1.0) unstable; urgency=low
+
+  * first iteration of full file reading is ready
+  * Beat, BeatEffects, ChordDiagram, MeasureTrackPair, MixTableChange, Note,
+    NoteEffects classes
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Mon, 23 Jun 2008 04:33:45 +0400
+
 libguitarpro-perl (0.0.6) unstable; urgency=low
 
   * MidiChannel, Measure, Info are separate packages now
