@@ -1,3 +1,10 @@
+libguitarpro-perl (0.1.1) unstable; urgency=low
+
+  * xml() method in GuitarPro::Piece and GuitarPro::Info
+  * GuitarPro::Utils package with common functions
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Wed, 25 Jun 2008 05:04:12 +0400
+
 libguitarpro-perl (0.1.0) unstable; urgency=low
 
   * first iteration of full file reading is ready

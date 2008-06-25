@@ -11,6 +11,8 @@ use GuitarPro::Measure;
 use GuitarPro::Track;
 use GuitarPro::MeasureTrackPair;
 
+use GuitarPro::Utils;
+
 sub new($$)
 {
     my ($class, $props) = @_;
@@ -74,9 +76,7 @@ sub new($$)
     # measure-track pairs, beats
     $self->{mtp} = [];
     my $mtp_count = $self->{measures_count} * $self->{tracks_count};
-#    print "mtp: $mtp_count\n";
     for my $i (0..($mtp_count - 1)) {
-#        print "reading $i\n";
         eval {
             push @{$self->{mtp}}, GuitarPro::MeasureTrackPair->load($binary_reader);
         }; if ($@) {
@@ -111,6 +111,14 @@ sub measure($$)
 {
     my ($self, $id) = @_;
     return $self->{measures}[$id];
+}
+
+sub xml($)
+{
+    my ($self) = @_;
+    return "<piece>"
+        ."<version>".quote($self->version())."</version>"
+        .$self->info->xml()."</piece>";
 }
 
 1;

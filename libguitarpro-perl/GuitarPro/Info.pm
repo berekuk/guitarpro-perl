@@ -3,6 +3,8 @@ package GuitarPro::Info;
 use strict;
 use warnings;
 
+use GuitarPro::Utils;
+
 my @INFO_FIELDS = qw(title subtitle interpret album author copyright tab_author instructional);
 
 {
@@ -27,6 +29,14 @@ sub load($$)
         $info->{$_} = $binary_reader->readStringByte();
     }
     return bless $info => $class;
+}
+
+sub xml($)
+{
+    my ($self) = @_;
+    return "<info>"
+        .join('', map {"<$_>".quote($self->{$_})."</$_>"} @INFO_FIELDS)
+        ."</info>";
 }
 
 1;
