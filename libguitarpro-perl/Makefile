@@ -1,5 +1,5 @@
 test:
-	for f in `find GuitarPro -name '*.pm'`; do perl -c $$f; done
+	set -e; for f in `find GuitarPro -name '*.pm'`; do perl -c $$f; done
 	prove t/*.t
 
 install:

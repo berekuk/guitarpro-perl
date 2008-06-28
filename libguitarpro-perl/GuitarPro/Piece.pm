@@ -18,8 +18,19 @@ sub new($$)
     my ($class, $props) = @_;
     die "Expected hashref" unless ref $props eq 'HASH';
     die "file not specified" unless $props->{file};
-    open my $fh, $props->{file} or die "Can't read $props->{file}: $!";
-    my $bytes = join '', <$fh>;
+    my $bytes;
+
+    if (ref($props->{file})  eq 'GLOB') {
+        my $fh = $props->{file};
+        $bytes = join '', <$fh>;
+    } elsif (ref($props->{file}) eq 'SCALAR') {
+        # ref to string with data
+        $bytes = $$props;
+    } else {
+        # probably filename
+        open my $fh, $props->{file} or die "Can't read $props->{file}: $!"; 
+        $bytes = join '', <$fh>;
+    }
 
     my $binary_reader = new GuitarPro::BinaryReader($bytes);
 
