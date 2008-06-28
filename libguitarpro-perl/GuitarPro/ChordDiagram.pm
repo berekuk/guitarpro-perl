@@ -75,5 +75,14 @@ sub load($$)
     return bless $chord => $class;
 }
 
+sub xml($)
+{
+    my ($self) = @_;
+    my $xml = "<chord>";
+    $xml .= "<name>$self->{name}</name>";
+    $xml .= "</chord>";
+    return $xml;
+}
+
 1;
 

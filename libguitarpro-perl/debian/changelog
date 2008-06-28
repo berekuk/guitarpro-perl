@@ -1,3 +1,9 @@
+libguitarpro-perl (0.1.7) unstable; urgency=low
+
+  * xml for ChordDiagram
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Sat, 28 Jun 2008 23:12:32 +0400
+
 libguitarpro-perl (0.1.6) unstable; urgency=low
 
   * xml implementation for beat and note

@@ -8,6 +8,8 @@ use GuitarPro::BeatEffects;
 use GuitarPro::MixTableChange;
 use GuitarPro::Note;
 
+use GuitarPro::Utils;
+
 use constant {
     BEAT_DOTTED => 0,
     BEAT_CHORD_DIAGRAM => 1,
@@ -72,6 +74,12 @@ sub xml($)
     my $xml = "<beat>";
     for my $note (@{$self->{notes}}) {
         $xml .= $note->xml();
+    }
+    if ($self->{text}) {
+        $xml .= "<text>".quote($self->{text})."</text>";
+    }
+    if ($self->{chord_diagram}) {
+        $xml .= $self->{chord_diagram}->xml()
     }
     $xml .= "</beat>";
     return $xml;
