@@ -75,9 +75,10 @@ sub new($$)
 
     # measure-track pairs, beats
     $self->{mtp} = [];
-    my $mtp_count = $self->{measures_count} * $self->{tracks_count};
-    for my $i (0..($mtp_count - 1)) {
-        push @{$self->{mtp}}, GuitarPro::MeasureTrackPair->load($binary_reader);
+    for my $measure_id (0..($self->{measures_count}-1)) {
+        for my $track_id (0..($self->{tracks_count}-1)) {
+            push @{$self->{mtp}}, GuitarPro::MeasureTrackPair->load($binary_reader, $measure_id, $track_id);
+        }
     }
 
     delete $self->{bytes};
@@ -144,10 +145,16 @@ sub xml($)
     $xml .= "</measures>";
 
     $xml .= "<tracks>";
-    for my $measure (@{$self->{measures}}) {
-        $xml .= $measure->xml();
+    for my $track (@{$self->{tracks}}) {
+        $xml .= $track->xml();
     }
     $xml .= "</tracks>";
+
+    $xml .= "<measure-track-pairs>";
+    for my $mtp (@{$self->{mtp}}) {
+        $xml .= $mtp->xml();
+    }
+    $xml .= "</measure-track-pairs>";
 
     $xml .= '</piece>';
     return $xml;

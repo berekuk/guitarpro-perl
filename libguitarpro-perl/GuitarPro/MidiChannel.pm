@@ -32,7 +32,7 @@ sub is_empty($)
 sub xml($)
 {
     my ($self) = @_;
-    my $xml = qq{<midi-channel id="$self->{id}">};
+    my $xml = q{<midi-channel id="}.($self->{id}+1).q{">};
 
     for my $prop (qw(instrument volume balance chorus reverb phaser tremolo)) {
         $xml .= "<$prop>$self->{$prop}</$prop>" if $self->{$prop};

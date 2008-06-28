@@ -65,5 +65,11 @@ sub load($$)
     return bless $beat => $class;
 }
 
+sub xml($)
+{
+    my ($self) = @_;
+    return "<beat>not implemented</beat>";
+}
+
 1;
 
