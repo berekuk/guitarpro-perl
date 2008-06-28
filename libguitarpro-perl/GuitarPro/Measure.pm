@@ -40,7 +40,7 @@ sub load($$)
         $measure->{marker_color} = $binary_reader->readInt(); # TODO - write readColor() method
     }
     if ($bits[MEASURE_TONALITY]) {
-        $measure->{tonality_type} = $binary_reader->readByte();
+        $measure->{tonality_type} = $binary_reader->readByte(); # TODO: need some enum representation
         $measure->{tonality} = $binary_reader->readByte();
     }
     return bless $measure => $class;
@@ -49,7 +49,12 @@ sub load($$)
 sub xml($)
 {
     my ($self) = @_;
-    return "<measure>not implemented</measure>";
+    my $xml = "<measure>";
+    for my $prop (qw(numerator denominator repeats_count alt_ending_number marker marker_color tonality_type tonality)) {
+        $xml .= "<$prop>$self->{$prop}</$prop>" if $self->{$prop};
+    }
+    $xml .= "</measure>";
+    return $xml;
 }
 
 1;
