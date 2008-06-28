@@ -16,11 +16,11 @@ use constant {
     NOTE_HAND           => 7,
 };
 
-sub load($$)
+sub load($$$)
 {
-    my ($class, $binary_reader) = @_;
+    my ($class, $binary_reader, $string) = @_;
     die "Strange reader class" unless $binary_reader->isa('GuitarPro::BinaryReader');
-    my $note = {};
+    my $note = {string => $string};
 
     my $header = $binary_reader->readByte();
     my @bits = split "", unpack "b8", chr($header);
@@ -55,6 +55,15 @@ sub load($$)
     }
 
     return bless $note => $class;
+}
+
+sub xml($)
+{
+    my ($self) = @_;
+    my $xml = qq{<note string="$self->{string}">};
+    $xml .= "<fret>$self->{fret}</fret>" if exists $self->{fret};
+    $xml .= "</note>";
+    return $xml;
 }
 
 1;

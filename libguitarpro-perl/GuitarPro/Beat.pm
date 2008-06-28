@@ -58,8 +58,9 @@ sub load($$)
     $beat->{strings} = [@string_bits];
     $beat->{notes} = [];
     my $number_of_strings = scalar grep { $_ } @string_bits;
-    for my $i (0..($number_of_strings-1)) {
-        push @{$beat->{notes}}, GuitarPro::Note->load($binary_reader);
+    for my $string (0..(@string_bits-1)) {
+        next unless $string_bits[$string];
+        push @{$beat->{notes}}, GuitarPro::Note->load($binary_reader, $string);
     }
 
     return bless $beat => $class;
@@ -68,7 +69,12 @@ sub load($$)
 sub xml($)
 {
     my ($self) = @_;
-    return "<beat>not implemented</beat>";
+    my $xml = "<beat>";
+    for my $note (@{$self->{notes}}) {
+        $xml .= $note->xml();
+    }
+    $xml .= "</beat>";
+    return $xml;
 }
 
 1;

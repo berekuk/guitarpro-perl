@@ -1,3 +1,9 @@
+libguitarpro-perl (0.1.6) unstable; urgency=low
+
+  * xml implementation for beat and note
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Sat, 28 Jun 2008 22:38:06 +0400
+
 libguitarpro-perl (0.1.5) unstable; urgency=low
 
   * begin-repeat tag in measure xml
