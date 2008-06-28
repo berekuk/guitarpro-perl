@@ -3,11 +3,11 @@ package GuitarPro::MidiChannel;
 use strict;
 use warnings;
 
-sub load($$)
+sub load($$$)
 {
-    my ($class, $binary_reader) = @_;
+    my ($class, $binary_reader, $id) = @_;
     die "Strange reader class" unless $binary_reader->isa('GuitarPro::BinaryReader');
-    my $channel = {};
+    my $channel = {id => $id};
     $channel->{instrument} = $binary_reader->readInt();
     $channel->{volume} = $binary_reader->readByte();
     $channel->{balance} = $binary_reader->readByte();
@@ -18,6 +18,28 @@ sub load($$)
     $binary_reader->readByte(); # backward compatibility with 3.0
     $binary_reader->readByte();
     return bless $channel => $class;
+}
+
+sub is_empty($)
+{
+    my ($self) = @_;
+    for my $prop (qw(instrument volume balance chorus reverb phaser tremolo)) {
+        return 0 if $self->{$prop};
+    }
+    return 1;
+}
+
+sub xml($)
+{
+    my ($self) = @_;
+    my $xml = qq{<midi-channel id="$self->{id}">};
+
+    for my $prop (qw(instrument volume balance chorus reverb phaser tremolo)) {
+        $xml .= "<$prop>$self->{$prop}</$prop>" if $self->{$prop};
+    }
+
+    $xml .= "</midi-channel>";
+    return $xml;
 }
 
 1;

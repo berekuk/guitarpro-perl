@@ -46,5 +46,11 @@ sub load($$)
     return bless $measure => $class;
 }
 
+sub xml($)
+{
+    my ($self) = @_;
+    return "<measure>not implemented</measure>";
+}
+
 1;
 

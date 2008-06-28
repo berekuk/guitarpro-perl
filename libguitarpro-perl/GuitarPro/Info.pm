@@ -35,7 +35,7 @@ sub xml($)
 {
     my ($self) = @_;
     return "<info>"
-        .join('', map {"<$_>".quote($self->{$_})."</$_>"} @INFO_FIELDS)
+        .join('', map {"<$_>".quote($self->{$_})."</$_>"} grep { $self->{$_} } @INFO_FIELDS)
         ."</info>";
 }
 

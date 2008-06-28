@@ -36,5 +36,11 @@ sub load($$)
     return bless $track => $class;
 }
 
+sub xml($)
+{
+    my ($self) = @_;
+    return "<track>not implemented</track>";
+}
+
 1;
 

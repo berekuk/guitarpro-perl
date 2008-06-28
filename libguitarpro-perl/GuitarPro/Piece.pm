@@ -50,8 +50,8 @@ sub new($$)
     $self->{octave} = $binary_reader->readInt();
 
     $self->{midi_channels} = [];
-    for my $i (0..63) {
-        my $channel = GuitarPro::MidiChannel->load($binary_reader);
+    for my $id (0..63) {
+        my $channel = GuitarPro::MidiChannel->load($binary_reader, $id);
         push @{$self->{midi_channels}}, $channel;
     }
     $self->{measures_count} = $binary_reader->readInt();
@@ -61,14 +61,14 @@ sub new($$)
 
     # measures
     $self->{measures} = [];
-    for my $i (0..($self->{measures_count} - 1)) {
+    for my $id (0..($self->{measures_count} - 1)) {
         my $measure = GuitarPro::Measure->load($binary_reader);
         push @{$self->{measures}}, $measure;
     }
 
     # tracks
     $self->{tracks} = [];
-    for my $i (0..($self->{tracks_count} - 1)) {
+    for my $id (0..($self->{tracks_count} - 1)) {
         my $track = GuitarPro::Track->load($binary_reader);
         push @{$self->{tracks}}, $track;
     }
@@ -77,12 +77,7 @@ sub new($$)
     $self->{mtp} = [];
     my $mtp_count = $self->{measures_count} * $self->{tracks_count};
     for my $i (0..($mtp_count - 1)) {
-        eval {
-            push @{$self->{mtp}}, GuitarPro::MeasureTrackPair->load($binary_reader);
-        }; if ($@) {
-            warn $@;
-            last;
-        }
+        push @{$self->{mtp}}, GuitarPro::MeasureTrackPair->load($binary_reader);
     }
 
     delete $self->{bytes};
@@ -113,12 +108,49 @@ sub measure($$)
     return $self->{measures}[$id];
 }
 
+sub lyrics($)
+{
+    my ($self) = @_;
+    my $lyrics = join "\n", grep { $_ } @{$self->{lyrics}};
+}
+
 sub xml($)
 {
     my ($self) = @_;
-    return "<piece>"
-        ."<version>".quote($self->version())."</version>"
-        .$self->info->xml()."</piece>";
+    my $xml = '<piece>';
+    $xml .= "<version>".quote($self->version())."</version>";
+    $xml .= $self->info->xml();
+
+    my $lyrics = $self->lyrics();
+    if ($lyrics =~ /\S+/) {
+        $xml .= qq{<lyrics track="$self->{lyrics_track}">}.quote($lyrics).q{</lyrics>};
+    }
+
+    $xml .= "<tempo>$self->{tempo}</tempo>";
+    $xml .= "<key>$self->{key}</key>";
+    $xml .= "<octave>$self->{octave}</octave>";
+
+    $xml .= "<midi-channels>";
+    for my $midi_channel (@{$self->{midi_channels}}) {
+        next if $midi_channel->is_empty();
+        $xml .= $midi_channel->xml();
+    }
+    $xml .= "</midi-channels>";
+
+    $xml .= "<measures>";
+    for my $measure (@{$self->{measures}}) {
+        $xml .= $measure->xml();
+    }
+    $xml .= "</measures>";
+
+    $xml .= "<tracks>";
+    for my $measure (@{$self->{measures}}) {
+        $xml .= $measure->xml();
+    }
+    $xml .= "</tracks>";
+
+    $xml .= '</piece>';
+    return $xml;
 }
 
 1;

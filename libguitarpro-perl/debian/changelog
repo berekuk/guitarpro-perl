@@ -1,3 +1,10 @@
+libguitarpro-perl (0.1.2) unstable; urgency=low
+
+  * xml() method mocks in some modules; xml() method in MidiChannel
+  * put only non-empty props in xml in Info.pm
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Sat, 28 Jun 2008 05:04:14 +0400
+
 libguitarpro-perl (0.1.1) unstable; urgency=low
 
   * xml() method in GuitarPro::Piece and GuitarPro::Info
