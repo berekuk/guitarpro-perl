@@ -1,3 +1,9 @@
+libguitarpro-perl (0.1.8) unstable; urgency=low
+
+  * Measure: end-repeat and alt-ending-count tags in xml
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Sun, 29 Jun 2008 00:14:02 +0400
+
 libguitarpro-perl (0.1.7) unstable; urgency=low
 
   * xml for ChordDiagram

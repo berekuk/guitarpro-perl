@@ -56,6 +56,16 @@ sub xml($)
     if ($self->{header}[MEASURE_BEGIN_REPEAT]) {
         $xml .= "<begin-repeat/>";
     }
+    if ($self->{header}[MEASURE_END_REPEAT]) {
+        if ($self->{repeats_count} == 2) {
+            $xml .= "<end-repeat/>";
+        } else {
+            $xml .= qq{<end-repeat count="$self->{repeats_count}"/>};
+        }
+    }
+    if ($self->{header}[MEASURE_ALT_ENDING_NUMBER]) {
+        $xml .= "<alt-ending>$self->{alt_ending_number}</alt-ending>";
+    }
     $xml .= "</measure>";
     return $xml;
 }
