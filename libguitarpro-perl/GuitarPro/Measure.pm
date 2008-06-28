@@ -53,6 +53,9 @@ sub xml($)
     for my $prop (qw(numerator denominator repeats_count alt_ending_number marker marker_color tonality_type tonality)) {
         $xml .= "<$prop>$self->{$prop}</$prop>" if $self->{$prop};
     }
+    if ($self->{header}[MEASURE_BEGIN_REPEAT]) {
+        $xml .= "<begin-repeat/>";
+    }
     $xml .= "</measure>";
     return $xml;
 }

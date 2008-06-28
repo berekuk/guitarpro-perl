@@ -1,3 +1,9 @@
+libguitarpro-perl (0.1.5) unstable; urgency=low
+
+  * begin-repeat tag in measure xml
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Sat, 28 Jun 2008 22:04:14 +0400
+
 libguitarpro-perl (0.1.4) unstable; urgency=low
 
   * xml representation for measure
