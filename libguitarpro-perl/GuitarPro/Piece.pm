@@ -77,7 +77,7 @@ sub new($$)
     $self->{mtp} = [];
     for my $measure_id (0..($self->{measures_count}-1)) {
         for my $track_id (0..($self->{tracks_count}-1)) {
-            push @{$self->{mtp}}, GuitarPro::MeasureTrackPair->load($binary_reader, $measure_id, $track_id);
+            push @{$self->{mtp}}, GuitarPro::MeasureTrackPair->load($binary_reader, $track_id, $measure_id);
         }
     }
 
