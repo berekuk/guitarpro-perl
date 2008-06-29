@@ -1,3 +1,11 @@
+libguitarpro-perl (0.1.11) unstable; urgency=low
+
+  * many sanity checks for faster failing
+  * bugfixes in MixTableChange loading
+  * gpcheck utility
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Sun, 29 Jun 2008 05:41:09 +0400
+
 libguitarpro-perl (0.1.10) unstable; urgency=low
 
   * fix in reading lyrics and notices

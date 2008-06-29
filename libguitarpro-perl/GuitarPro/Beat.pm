@@ -30,7 +30,10 @@ sub load($$)
     $beat->{header} = [@bits]; # TODO - define constants naming each flag
 
     if ($bits[BEAT_STATUS]) {
-        $beat->{status} = $binary_reader->readByte();
+        $beat->{status} = $binary_reader->readUnsignedByte();
+        if ($beat->{status} > 10) { # FIXME: stricter condition?
+            die "Broken beat status $beat->{status}";
+        }
     }
     $beat->{duration} = $binary_reader->readByte();
     if ($bits[BEAT_TUPLET]) {

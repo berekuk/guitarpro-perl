@@ -23,13 +23,22 @@ sub load($$)
     my @bits = split "", unpack "b8", chr($header);
     $measure->{header} = [@bits]; # TODO - define constants naming each flag
     if ($bits[MEASURE_NUMERATOR]) {
-        $measure->{numerator} = $binary_reader->readByte();
+        $measure->{numerator} = $binary_reader->readUnsignedByte();
+        if ($measure->{numerator} > 20) {
+            die "Broken numerator $measure->{numerator}";
+        }
     }
     if ($bits[MEASURE_DENOMINATOR]) {
-        $measure->{denominator} = $binary_reader->readByte();
+        $measure->{denominator} = $binary_reader->readUnsignedByte();
+        if ($measure->{denominator} > 20) {
+            die "Broken denominator $measure->{denominator}";
+        }
     }
     if ($bits[MEASURE_END_REPEAT]) {
-        $measure->{repeats_count} = $binary_reader->readByte();
+        $measure->{repeats_count} = $binary_reader->readUnsignedByte();
+        if ($measure->{repeats_count} > 50) {
+            die "Broken repeats count $measure->{repeats_count}"; # TODO - can this happen sometimes?
+        }
     }
     if ($bits[MEASURE_ALT_ENDING_NUMBER]) {
         $measure->{alt_ending_number} = $binary_reader->readByte();

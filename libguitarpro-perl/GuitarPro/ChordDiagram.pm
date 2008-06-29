@@ -10,7 +10,7 @@ sub load($$)
     my $chord = {};
 
     my $header = $binary_reader->readByte();
-    die unless $header == 1;
+    die 'Unknown header' unless $header == 1;
     $chord->{header} = $header;
     $chord->{sharp} = $binary_reader->readByte();
 

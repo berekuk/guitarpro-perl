@@ -1,0 +1,40 @@
+#!/usr/bin/perl
+
+use GuitarPro::Piece;
+
+use Getopt::Long;
+use Pod::Usage;
+
+{
+    my $help;
+    GetOptions(
+        'h|help'    => \$help,
+    ) or pod2usage(2);
+    pod2usage(1) if $help;
+}
+
+unless (@ARGV) {
+    pod2usage(2);
+}
+
+for my $filename (@ARGV) {
+    my $piece;
+    eval {
+        $piece = new GuitarPro::Piece({file => $filename});
+    }; if ($@) {
+        warn "$filename failed: $@";
+        next;
+    }
+    print "$filename ok: ", $piece->{version}, "\n";
+}
+
+__END__
+
+=head1 NAME
+
+gpcheck - simple tool for checking GuitarPro files
+
+=head1 SYNOPSIS
+
+    gpcheck FILE ...
+

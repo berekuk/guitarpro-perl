@@ -16,9 +16,13 @@ sub load($$)
     $change->{tempo} = $binary_reader->readInt();
 
     for (@byte_fields) {
+        next if $change->{$_} == -1;
+        next if $_ eq 'instrument';
         $change->{$_."_duration"} = $binary_reader->readByte();
     }
-    $change->{tempo_duration} = $binary_reader->readByte();
+    unless ($change->{tempo} == -1) {
+        $change->{tempo_duration} = $binary_reader->readByte();
+    }
 
     $change->{apply_byte} = $binary_reader->readByte(); # TODO - parse specific bits
 

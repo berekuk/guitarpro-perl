@@ -32,7 +32,7 @@ sub readShort($)
 sub readInt($)
 {
     my ($self) = @_;
-    my $int = unpack "x$self->{position}I", $self->{bytes};
+    my $int = unpack "x$self->{position}i", $self->{bytes};
     $self->{position} += 4;
     return $int;
 }

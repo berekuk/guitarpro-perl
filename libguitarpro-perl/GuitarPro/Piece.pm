@@ -65,7 +65,13 @@ sub new($$)
         push @{$self->{midi_channels}}, $channel;
     }
     $self->{measures_count} = $binary_reader->readInt();
+    if ($self->{measures_count} < 0 || $self->{measures_count} > 10000) {
+        die "Broken measure count $self->{measures_count}";
+    }
     $self->{tracks_count} = $binary_reader->readInt();
+    if ($self->{tracks_count} < 0 || $self->{tracks_count} > 10000) {
+        die "Broken measure count $self->{measures_count}";
+    }
 
     ### BODY ###
 
@@ -87,7 +93,13 @@ sub new($$)
     $self->{mtp} = [];
     for my $measure_id (0..($self->{measures_count}-1)) {
         for my $track_id (0..($self->{tracks_count}-1)) {
-            push @{$self->{mtp}}, GuitarPro::MeasureTrackPair->load($binary_reader, $track_id, $measure_id);
+            my $mtp;
+            eval {
+                $mtp = GuitarPro::MeasureTrackPair->load($binary_reader, $track_id, $measure_id);
+            }; if ($@) {
+                die "Broken mtp[$measure_id, $track_id]: $@";
+            }
+            push @{$self->{mtp}}, $mtp;
         }
     }
 
