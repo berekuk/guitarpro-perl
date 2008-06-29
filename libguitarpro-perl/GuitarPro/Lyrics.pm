@@ -3,6 +3,8 @@ package GuitarPro::Lyrics;
 use strict;
 use warnings;
 
+use GuitarPro::Utils;
+
 sub load($$)
 {
     my ($class, $binary_reader) = @_;
@@ -26,7 +28,7 @@ sub xml($)
     my ($self) = @_;
     return unless exists $self->{lines};
     my $xml = qq{<lyrics track="$self->{track_id}>};
-    $xml .= join "\n", grep {$_} @{$self->{lines}};
+    $xml .= quote(join "\n", grep {$_} @{$self->{lines}});
     $xml .= "</lyrics>";
     return $xml;
 }

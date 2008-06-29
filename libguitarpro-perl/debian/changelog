@@ -1,3 +1,9 @@
+libguitarpro-perl (0.2.1-1) unstable; urgency=low
+
+  * quote lyrics
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Sun, 29 Jun 2008 23:22:45 +0400
+
 libguitarpro-perl (0.2.1) unstable; urgency=low
 
   * polymorth classes for each version, for packages Piece and Info by now
