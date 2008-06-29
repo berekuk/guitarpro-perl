@@ -10,7 +10,9 @@ sub new($$)
         position => 0,
         bytes => $bytes,
     };
-    return bless $self => $class;
+    $self = bless $self => $class;
+    $self->{version} = $self->readStringByte(30);
+    return $self;
 }
 
 sub readUnsignedByte($)
@@ -76,6 +78,12 @@ sub position($)
 {
     my ($self) = @_;
     return $self->{position};
+}
+
+sub version($)
+{
+    my ($self) = @_;
+    return $self->{version};
 }
 
 1;

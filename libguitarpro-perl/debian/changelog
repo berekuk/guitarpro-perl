@@ -1,3 +1,12 @@
+libguitarpro-perl (0.2.1) unstable; urgency=low
+
+  * polymorth classes for each version, for packages Piece and Info by now
+  * read version of stream in BinaryReader constructor and store it (so each
+    subclass can get it when loading itself)
+  * lyrics is object too
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Sun, 29 Jun 2008 22:14:37 +0400
+
 libguitarpro-perl (0.1.14) unstable; urgency=low
 
   * append effects into note
