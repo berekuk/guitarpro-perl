@@ -25,7 +25,7 @@ sub new($$)
         $bytes = join '', <$fh>;
     } elsif (ref($props->{file}) eq 'SCALAR') {
         # ref to string with data
-        $bytes = $$props;
+        $bytes = ${$props->{file}};
     } else {
         # probably filename
         open my $fh, $props->{file} or die "Can't read $props->{file}: $!"; 
@@ -51,8 +51,7 @@ sub new($$)
     $self->{lyrics} = [];
     for my $i (0..4) {
         my $measure_number = $binary_reader->readInt(); # not mentioned in doc, copied from dguitar source
-        my $line_length = $binary_reader->readInt();
-        $self->{lyrics}[$i] = $binary_reader->readStringByte();
+        $self->{lyrics}[$i] = $binary_reader->readStringInteger();
     }
 
     # other information about piece
@@ -90,6 +89,10 @@ sub new($$)
         for my $track_id (0..($self->{tracks_count}-1)) {
             push @{$self->{mtp}}, GuitarPro::MeasureTrackPair->load($binary_reader, $track_id, $measure_id);
         }
+    }
+
+    if ($binary_reader->position() != length($self->{bytes})) {
+        warn "Position ".$binary_reader->position().", file size: ", length($self->{bytes});
     }
 
     delete $self->{bytes};

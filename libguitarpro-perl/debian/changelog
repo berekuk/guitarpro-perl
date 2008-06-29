@@ -1,3 +1,9 @@
+libguitarpro-perl (0.1.10) unstable; urgency=low
+
+  * fix in reading lyrics and notices
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Sun, 29 Jun 2008 04:45:11 +0400
+
 libguitarpro-perl (0.1.9) unstable; urgency=low
 
   * Piece.pm: understand scalar ref or glob as source of data

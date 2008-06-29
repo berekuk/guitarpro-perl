@@ -28,6 +28,15 @@ sub load($$)
         $binary_reader->readInt(); # just skip it
         $info->{$_} = $binary_reader->readStringByte();
     }
+    my $notices_count = $binary_reader->readInt();
+    $info->{notices} = [];
+    for my $i (0..($notices_count - 1)) {
+        $binary_reader->readInt(); # just skip it
+        push @{$info->{notices}}, $binary_reader->readStringByte();
+
+    }
+    $info->{triplet_feel} = $binary_reader->readByte();
+
     return bless $info => $class;
 }
 

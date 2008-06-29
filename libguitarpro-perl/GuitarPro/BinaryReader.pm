@@ -48,6 +48,7 @@ sub readByte($)
 sub readBytes($$)
 {
     my ($self, $count) = @_;
+    return '' unless $count;
     my $bytes = unpack "x$self->{position}a$count", $self->{bytes};
     $self->{position} += $count;
     return $bytes;
@@ -61,6 +62,20 @@ sub readStringByte($;$)
     my $string = $self->readBytes($expected_length);
     $string = substr($string, 0, $real_length);
     return $string;
+}
+
+sub readStringInteger($)
+{
+    my ($self) = @_;
+    my $length = $self->readInt();
+    my $string = $self->readBytes($length);
+    return $string;
+}
+
+sub position($)
+{
+    my ($self) = @_;
+    return $self->{position};
 }
 
 1;
