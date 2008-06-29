@@ -1,6 +1,12 @@
+libguitarpro-perl (0.1.13) unstable; urgency=low
+
+  * fill beat proportional lengths and print them into xml
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Sun, 29 Jun 2008 19:55:30 +0400
+
 libguitarpro-perl (0.1.12) unstable; urgency=low
 
-  * bit duration and status in xml
+  * beat duration and status in xml
 
  -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Sun, 29 Jun 2008 18:30:46 +0400
 

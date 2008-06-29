@@ -19,6 +19,18 @@ sub load($$$$)
     return bless $pair => $class;
 }
 
+sub beats($)
+{
+    my ($self) = @_;
+    return @{$self->{beats}};
+}
+
+sub measure_id($)
+{
+    my ($self) = @_;
+    return $self->{measure_id};
+}
+
 sub xml($)
 {
     my ($self) = @_;

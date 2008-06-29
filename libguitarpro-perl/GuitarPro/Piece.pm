@@ -108,8 +108,39 @@ sub new($$)
     }
 
     delete $self->{bytes};
-    return bless $self => $class;
+
+    $self = bless $self => $class;
+
+    $self->fill_beat_sizes();
+
+    return $self;
 }
+
+# fill percent-of-measure for each beat
+sub fill_beat_sizes($)
+{
+    my ($self) = @_;
+    my ($numerator, $denominator) = (4, 4); # default values, should it be better to fail?
+    my $measure_length = $numerator / $denominator;
+
+    for my $mtp (@{$self->{mtp}}) {
+        my $measure = $self->{measures}[$mtp->measure_id()];
+        if (my $new_numerator = $measure->numerator()) {
+            $numerator = $new_numerator; # mtp's are sorted, so measures are sorted too
+            $measure_length = $numerator / $denominator;
+        }
+        if (my $new_denominator = $measure->denominator()) {
+            $denominator = $new_denominator; # mtp's are sorted, so measures are sorted too
+            $measure_length = $numerator / $denominator;
+        }
+
+        for my $beat ($mtp->beats()) {
+            my $d = $beat->duration();
+            $beat->set_length($measure_length * 2 ** (-$d-2));
+        }
+    }
+}
+
 
 sub version($)
 {

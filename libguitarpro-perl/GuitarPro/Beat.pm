@@ -74,15 +74,28 @@ sub load($$)
     return bless $beat => $class;
 }
 
+sub duration($)
+{
+    my ($self) = @_;
+    return $self->{duration};
+}
+
+sub set_length($$)
+{
+    my ($self, $length) = @_;
+    $self->{length} = $length;
+}
+
 sub xml($)
 {
     my ($self) = @_;
     my $xml = "<beat>";
 
-    if (exists $beat->{status}) {
-        $xml .= "<status>$beat->{status}</status>";
+    if (exists $self->{status}) {
+        $xml .= "<status>$self->{status}</status>";
     }
-    $xml .= "<duration>$beat->{duration}</duration>";
+    $xml .= "<duration>$self->{duration}</duration>";
+    $xml .= "<length>$self->{length}</length>" if $self->{length};
 
     for my $note (@{$self->{notes}}) {
         $xml .= $note->xml();

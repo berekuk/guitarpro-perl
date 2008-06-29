@@ -55,6 +55,18 @@ sub load($$)
     return bless $measure => $class;
 }
 
+sub numerator($)
+{
+    my ($self) = @_;
+    return $self->{numerator};
+}
+
+sub denominator($)
+{
+    my ($self) = @_;
+    return $self->{denominator};
+}
+
 sub xml($)
 {
     my ($self) = @_;
