@@ -27,7 +27,7 @@ sub xml($)
 {
     my ($self) = @_;
     return unless exists $self->{lines};
-    my $xml = qq{<lyrics track="$self->{track_id}>};
+    my $xml = qq{<lyrics track="$self->{track_id}">};
     $xml .= quote(join "\n", grep {$_} @{$self->{lines}});
     $xml .= "</lyrics>";
     return $xml;

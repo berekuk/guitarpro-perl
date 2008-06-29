@@ -1,3 +1,9 @@
+libguitarpro-perl (0.2.1-2) unstable; urgency=low
+
+  * name in xmlized track
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Mon, 30 Jun 2008 01:52:31 +0400
+
 libguitarpro-perl (0.2.1-1) unstable; urgency=low
 
   * quote lyrics

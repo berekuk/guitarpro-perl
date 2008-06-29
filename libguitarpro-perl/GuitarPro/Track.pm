@@ -3,6 +3,8 @@ package GuitarPro::Track;
 use strict;
 use warnings;
 
+use GuitarPro::Utils;
+
 use constant {
     TRACK_DRUMS => 0,
     TRACK_12_STRINGS => 1,
@@ -39,7 +41,10 @@ sub load($$)
 sub xml($)
 {
     my ($self) = @_;
-    return "<track>not implemented</track>";
+    my $xml = "<track>";
+    $xml .= "<name>".quote($self->{name})."</name>";
+    $xml .= "</track>";
+    return $xml;
 }
 
 1;
