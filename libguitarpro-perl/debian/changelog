@@ -1,3 +1,9 @@
+libguitarpro-perl (0.1.12) unstable; urgency=low
+
+  * bit duration and status in xml
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Sun, 29 Jun 2008 18:30:46 +0400
+
 libguitarpro-perl (0.1.11) unstable; urgency=low
 
   * many sanity checks for faster failing

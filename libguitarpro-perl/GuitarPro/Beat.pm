@@ -20,6 +20,11 @@ use constant {
     BEAT_STATUS => 6,
 };
 
+our %STATUSES = (
+    0   => 'empty',
+    2   => 'rest',
+);
+
 sub load($$)
 {
     my ($class, $binary_reader) = @_;
@@ -30,10 +35,8 @@ sub load($$)
     $beat->{header} = [@bits]; # TODO - define constants naming each flag
 
     if ($bits[BEAT_STATUS]) {
-        $beat->{status} = $binary_reader->readUnsignedByte();
-        if ($beat->{status} > 10) { # FIXME: stricter condition?
-            die "Broken beat status $beat->{status}";
-        }
+        my $status = $binary_reader->readUnsignedByte();
+        $beat->{status} = $STATUSES{$status} or die "Unknown beat status $beat->{status}";
     }
     $beat->{duration} = $binary_reader->readByte();
     if ($bits[BEAT_TUPLET]) {
@@ -75,9 +78,16 @@ sub xml($)
 {
     my ($self) = @_;
     my $xml = "<beat>";
+
+    if (exists $beat->{status}) {
+        $xml .= "<status>$beat->{status}</status>";
+    }
+    $xml .= "<duration>$beat->{duration}</duration>";
+
     for my $note (@{$self->{notes}}) {
         $xml .= $note->xml();
     }
+
     if ($self->{text}) {
         $xml .= "<text>".quote($self->{text})."</text>";
     }
