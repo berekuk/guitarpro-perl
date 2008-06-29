@@ -1,3 +1,10 @@
+libguitarpro-perl (0.1.14) unstable; urgency=low
+
+  * append effects into note
+  * xmlize effects (only slide by now)
+
+ -- Vyacheslav Matjukhin <mmcleric@gmail.com>  Sun, 29 Jun 2008 20:39:15 +0400
+
 libguitarpro-perl (0.1.13) unstable; urgency=low
 
   * fill beat proportional lengths and print them into xml

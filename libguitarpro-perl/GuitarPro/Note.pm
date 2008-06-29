@@ -51,7 +51,7 @@ sub load($$$)
     }
 
     if ($bits[NOTE_EFFECTS]) {
-        GuitarPro::NoteEffects->load($binary_reader);
+        $note->{effects} = GuitarPro::NoteEffects->load($binary_reader);
     }
 
     return bless $note => $class;
@@ -62,6 +62,9 @@ sub xml($)
     my ($self) = @_;
     my $xml = qq{<note string="$self->{string}">};
     $xml .= "<fret>$self->{fret}</fret>" if exists $self->{fret};
+    if ($self->{effects}) {
+        $xml .= $self->{effects}->xml();
+    }
     $xml .= "</note>";
     return $xml;
 }

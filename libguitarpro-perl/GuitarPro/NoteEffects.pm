@@ -21,6 +21,16 @@ use constant {
 
 };
 
+our %SLIDE_TYPES = (
+    '-2'    =>  'in-from-above',
+    '-1'    =>  'in-from-below',
+    '0'     =>  'no-slide',
+    '1'     =>  'shift-slide',
+    '2'     =>  'legato-slide',
+    '3'     =>  'out-downwards',
+    '4'     =>  'out-upwards',
+);
+
 sub load($$)
 {
     my ($class, $binary_reader) = @_;
@@ -59,6 +69,17 @@ sub load($$)
     }
 
     return bless $effects => $class;
+}
+
+sub xml($)
+{
+    my ($self) = @_;
+    my $xml = "<effects>";
+    if (exists $self->{slide}) {
+        $xml .= "<slide>".$SLIDE_TYPES{$self->{slide}}."</slide>";
+    }
+    $xml .= "</effects>";
+    return $xml;
 }
 
 1;
