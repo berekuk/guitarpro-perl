@@ -9,10 +9,10 @@ my @INFO_FIELDS = qw(title subtitle interpret album author copyright tab_author 
 
 {
     no strict 'refs';
-    for (@INFO_FIELDS) {
-        *{"$_"} = sub($) {
+    for my $field (@INFO_FIELDS) {
+        *{$field} = sub($) {
             my ($self) = @_;
-            return $self->{$_};
+            return $self->{$field};
         };
     }
     use strict;
