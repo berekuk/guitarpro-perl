@@ -66,7 +66,7 @@ sub load($$)
     $beat->{strings} = [@string_bits];
     $beat->{notes} = [];
     my $number_of_strings = scalar grep { $_ } @string_bits;
-    for my $string (0..(@string_bits-1)) {
+    for my $string (6,5,4,3,2,1,0) {
         next unless $string_bits[$string];
         push @{$beat->{notes}}, GuitarPro::Note->load($binary_reader, $string);
     }
