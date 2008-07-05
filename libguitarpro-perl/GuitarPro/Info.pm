@@ -3,13 +3,21 @@ package GuitarPro::Info;
 use strict;
 use warnings;
 
+use GuitarPro::Info::Info1;
 use GuitarPro::Info::Info4;
 use GuitarPro::Info::Info5;
 
 my %CLASSES = (
-    'FICHIER GUITAR PRO v3.00'  => 'GuitarPro::Info::Info4',
-    'FICHIER GUITAR PRO v4.06'  => 'GuitarPro::Info::Info4',
-#    'FICHIER GUITAR PRO v5.10'  => 'GuitarPro::Info::Info5',
+    'FICHIER GUITAR PRO v1'    => 'GuitarPro::Info::Info1',
+    'FICHIER GUITAR PRO v1.01' => 'GuitarPro::Info::Info1',
+    'FICHIER GUITAR PRO v1.02' => 'GuitarPro::Info::Info1',
+    'FICHIER GUITAR PRO v1.03' => 'GuitarPro::Info::Info1',
+    'FICHIER GUITAR PRO v1.04' => 'GuitarPro::Info::Info1',
+    'FICHIER GUITAR PRO v3.00' => 'GuitarPro::Info::Info4',
+    'FICHIER GUITAR PRO v4.00' => 'GuitarPro::Info::Info4',
+    'FICHIER GUITAR PRO v4.06' => 'GuitarPro::Info::Info4',
+    'FICHIER GUITAR PRO L4.06' => 'GuitarPro::Info::Info4',
+    'FICHIER GUITAR PRO v5.10' => 'GuitarPro::Info::Info5',
 );
 
 sub load($$)
