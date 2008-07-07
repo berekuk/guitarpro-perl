@@ -1,11 +1,13 @@
-package GuitarPro::Info::Info4;
+package GuitarPro::Info::Info1;
 
 use strict;
 use warnings;
 
 use GuitarPro::Utils;
 
-my @INFO_FIELDS = qw(title subtitle interpret album author copyright tab_author instructional);
+# TODO: base class
+
+my @INFO_FIELDS = qw(title author instructional);
 
 {
     no strict 'refs';
@@ -28,14 +30,6 @@ sub load($$)
         $binary_reader->readInt(); # just skip it
         $info->{$_} = $binary_reader->readStringByte();
     }
-    my $notices_count = $binary_reader->readInt();
-    $info->{notices} = [];
-    for my $i (0..($notices_count - 1)) {
-        $binary_reader->readInt(); # just skip it
-        push @{$info->{notices}}, $binary_reader->readStringByte();
-
-    }
-    $info->{triplet_feel} = $binary_reader->readByte();
 
     return bless $info => $class;
 }

@@ -12,6 +12,8 @@ sub new($$)
     };
     $self = bless $self => $class;
     $self->{version} = $self->readStringByte(30);
+    ($self->{subversion}) = $self->{version} =~ m{\.0(\d)}; # nothing to do with SVN :)
+    $self->{subversion} ||= 0;
     return $self;
 }
 
@@ -84,6 +86,12 @@ sub version($)
 {
     my ($self) = @_;
     return $self->{version};
+}
+
+sub subversion($)
+{
+    my ($self) = @_;
+    return $self->{subversion};
 }
 
 1;
