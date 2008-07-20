@@ -42,8 +42,8 @@ sub new($$)
     my $subclass = $KNOWN_VERSIONS{$binary_reader->version()} or
         die "Unknown version ".$binary_reader->version;
     my $piece = $subclass->load($binary_reader);
-    if ($binary_reader->position() != length($bytes)) {
-        warn "Position ".$binary_reader->position().", file size: ", length($bytes);
+    if ($binary_reader->position() != $binary_reader->length()) {
+        warn "Position ".$binary_reader->position().", file size: ", $binary_reader->length();
     }
     return $piece;
 }

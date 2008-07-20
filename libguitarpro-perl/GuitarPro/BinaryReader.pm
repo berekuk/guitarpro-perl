@@ -97,6 +97,12 @@ sub position($)
     return $self->{position};
 }
 
+sub length($)
+{
+    my ($self) = @_;
+    return length($self->{bytes});
+}
+
 sub version($)
 {
     my ($self) = @_;

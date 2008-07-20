@@ -77,6 +77,14 @@ sub load($$)
         }
     }
 
+    for (0..3) {
+        if ($binary_reader->length() > $binary_reader->position()) {
+            $binary_reader->readByte(); # read strange tail
+        } else {
+            last;
+        }
+    }
+
     $self->fill_beat_sizes();
     return $self;
 }

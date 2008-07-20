@@ -3,9 +3,10 @@ package GuitarPro::NoteEffects;
 use strict;
 use warnings;
 
+use GuitarPro::Header;
 use GuitarPro::Bend;
 
-use constant {
+my $HEADER_NAMES = {
     BEND        => 0,
     HAMMER      => 1,
     SLIDE_3     => 2,
@@ -37,33 +38,30 @@ sub load($$)
     die "Strange reader class" unless $binary_reader->isa('GuitarPro::BinaryReader');
     my $effects = {};
 
-    my $header = $binary_reader->readByte();
-    my @bits = split "", unpack "b8", chr($header);
-    $header = $binary_reader->readByte();
-    push @bits, split "", unpack "b8", chr($header);
-    $effects->{bits} = [@bits];
+    my $header = new GuitarPro::Header($binary_reader->readByte(), $binary_reader->readByte());
+    $header->set_names($HEADER_NAMES);
 
-    if ($bits[BEND]) {
+    if ($header->has('BEND')) {
         $effects->{bend} = GuitarPro::Bend->load($binary_reader);
     }
 
-    if ($bits[GRACE]) {
+    if ($header->has('GRACE')) {
         $effects->{grace_fret} = $binary_reader->readByte();
         $effects->{grace_dynamic} = $binary_reader->readByte();
         $effects->{grace_transition} = $binary_reader->readByte();
         $effects->{grace_duration} = $binary_reader->readByte();
     }
 
-    if ($bits[TREMOLO]) {
+    if ($header->has('TREMOLO')) {
         $effects->{tremolo} = $binary_reader->readByte();
     }
-    if ($bits[SLIDE]) {
+    if ($header->has('SLIDE')) {
         $effects->{slide} = $binary_reader->readByte();
     }
-    if ($bits[HARMONIC]) {
+    if ($header->has('HARMONIC')) {
         $effects->{harmonic} = $binary_reader->readByte();
     }
-    if ($bits[TRILL]) {
+    if ($header->has('TRILL')) {
         $effects->{trill_fret} = $binary_reader->readByte();
         $effects->{trill_period} = $binary_reader->readByte();
     }
