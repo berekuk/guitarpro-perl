@@ -3,6 +3,8 @@ package GuitarPro::Beat;
 use strict;
 use warnings;
 
+use GuitarPro::Utils;
+
 use GuitarPro::Beat::Beat1;
 use GuitarPro::Beat::Beat4;
 

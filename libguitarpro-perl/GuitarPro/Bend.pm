@@ -3,24 +3,24 @@ package GuitarPro::Bend;
 use strict;
 use warnings;
 
+use GuitarPro::Bend::Bend1;
+use GuitarPro::Bend::Bend4;
+
+my %CLASSES = (
+    'FICHIER GUITARE PRO v1'    => 'GuitarPro::Bend::Bend1',
+    'FICHIER GUITARE PRO v1.01' => 'GuitarPro::Bend::Bend1',
+    'FICHIER GUITARE PRO v1.02' => 'GuitarPro::Bend::Bend1',
+    'FICHIER GUITARE PRO v1.03' => 'GuitarPro::Bend::Bend1',
+    'FICHIER GUITARE PRO v1.04' => 'GuitarPro::Bend::Bend1',
+    'FICHIER GUITAR PRO v4.06' => 'GuitarPro::Bend::Bend4',
+);
+
 sub load($$;$)
 {
-    my ($class, $binary_reader, $context) = @_;
+    my ($class, $binary_reader, $context) = @_; # context is some hash with version-specific data which is needed for loading
     die "Strange reader class" unless $binary_reader->isa('GuitarPro::BinaryReader');
-    my $bend = bless {} => $class;
-
-    $bend->{type} = $binary_reader->readByte();
-    $bend->{value} = $binary_reader->readInt();
-    $bend->{points_count} = $binary_reader->readInt();
-    $bend->{points} = [];
-    for my $i (0..($bend->{points_count}-1)) {
-        my $point = {};
-        $point->{time_position} = $binary_reader->readInt();
-        $point->{vertical_position} = $binary_reader->readInt();
-        $point->{vibrato} = $binary_reader->readByte();
-        push @{$bend->{points}}, $point;
-    }
-    return $bend;
+    my $subclass = $CLASSES{$binary_reader->version()} or die "Reading bend unimplemented for this version";
+    return $subclass->load($binary_reader, $context);
 }
 
 1;

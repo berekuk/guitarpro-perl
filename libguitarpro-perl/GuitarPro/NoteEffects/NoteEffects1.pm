@@ -3,6 +3,8 @@ package GuitarPro::NoteEffects::NoteEffects1;
 use strict;
 use warnings;
 
+use base qw(GuitarPro::NoteEffects);
+
 use GuitarPro::Bend;
 
 sub load($$)

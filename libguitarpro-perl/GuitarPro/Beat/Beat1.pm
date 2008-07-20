@@ -24,6 +24,7 @@ sub load($$)
     die "Strange reader class" unless $binary_reader->isa('GuitarPro::BinaryReader');
     my $beat = bless {} => $class;
 
+    $binary_reader->readInt(); # what is this?
     $beat->{duration} = $binary_reader->readByte();
 
     my $header = new GuitarPro::Header($binary_reader->readByte());

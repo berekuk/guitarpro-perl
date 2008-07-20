@@ -3,6 +3,8 @@ package GuitarPro::NoteEffects;
 use strict;
 use warnings;
 
+use GuitarPro::Utils;
+
 use GuitarPro::NoteEffects::NoteEffects1;
 use GuitarPro::NoteEffects::NoteEffects4;
 
