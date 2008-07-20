@@ -11,15 +11,6 @@ BEGIN {
     use_ok('GuitarPro::Piece');
 }
 
-TODO: {
-    local $TODO = "unimplemented";
-
-    my $piece = eval {new GuitarPro::Piece({file => 't/data/version1.gtp'})};
-    if ($@) {
-        #fail("parsing version1: $@");
-        ok(0, "failed to parse version1: $@");
-    } else {
-        is($piece->version, 'FICHIER GUITARE PRO v1', 'parsing version1');
-    }
-}
+my $piece = eval {new GuitarPro::Piece({file => 't/data/version1.gtp'})};
+is($piece->version, 'FICHIER GUITARE PRO v1', 'parsing version1');
 
