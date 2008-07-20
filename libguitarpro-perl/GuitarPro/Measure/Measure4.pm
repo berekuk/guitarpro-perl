@@ -16,7 +16,7 @@ my $HEADER_NAMES = {
     DOUBLE_BAR => 7,
 };
 
-use base qw(GuitarPro::Measure);
+our @ISA = qw(GuitarPro::Measure);
 
 sub load($$)
 {

@@ -3,11 +3,11 @@ package GuitarPro::Bend;
 use strict;
 use warnings;
 
-sub load($$)
+sub load($$;$)
 {
-    my ($class, $binary_reader) = @_;
+    my ($class, $binary_reader, $context) = @_;
     die "Strange reader class" unless $binary_reader->isa('GuitarPro::BinaryReader');
-    my $bend = {};
+    my $bend = bless {} => $class;
 
     $bend->{type} = $binary_reader->readByte();
     $bend->{value} = $binary_reader->readInt();
@@ -20,7 +20,7 @@ sub load($$)
         $point->{vibrato} = $binary_reader->readByte();
         push @{$bend->{points}}, $point;
     }
-    return bless $bend => $class;
+    return $bend;
 }
 
 1;

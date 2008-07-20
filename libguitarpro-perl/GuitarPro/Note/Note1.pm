@@ -3,7 +3,7 @@ package GuitarPro::Note::Note1;
 use strict;
 use warnings;
 
-use base qw(GuitarPro::Note);
+our @ISA = qw(GuitarPro::Note);
 
 sub load($$$)
 {

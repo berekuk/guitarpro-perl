@@ -3,7 +3,7 @@ package GuitarPro::Beat::Beat1;
 use strict;
 use warnings;
 
-use base qw(GuitarPro::Beat);
+our @ISA = qw(GuitarPro::Beat);
 
 use GuitarPro::Note;
 use GuitarPro::ChordDiagram;

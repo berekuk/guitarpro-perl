@@ -3,7 +3,7 @@ package GuitarPro::Note::Note4;
 use strict;
 use warnings;
 
-use base qw(GuitarPro::Note);
+our @ISA = qw(GuitarPro::Note);
 
 use GuitarPro::NoteEffects;
 use GuitarPro::Header;

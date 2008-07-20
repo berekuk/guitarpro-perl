@@ -5,7 +5,7 @@ use warnings;
 
 use GuitarPro::Header;
 
-use base qw(GuitarPro::Measure);
+our @ISA = qw(GuitarPro::Measure);
 
 my $HEADER_NAMES = {
     BEGIN_REPEAT => 0,
