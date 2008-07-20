@@ -27,8 +27,7 @@ sub load($$)
     my $info = {};
 
     for (@INFO_FIELDS) {
-        $binary_reader->readInt(); # just skip it
-        $info->{$_} = $binary_reader->readStringByte();
+        $info->{$_} = $binary_reader->readStringByteSized();
     }
 
     return bless $info => $class;

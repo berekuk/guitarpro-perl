@@ -3,58 +3,33 @@ package GuitarPro::Note;
 use strict;
 use warnings;
 
-use GuitarPro::NoteEffects;
+use GuitarPro::Note::Note1;
+use GuitarPro::Note::Note4;
 
-use constant {
-    NOTE_DURATION => 0,
-    NOTE_DOTTED         => 1,
-    NOTE_GHOST          => 2,
-    NOTE_EFFECTS        => 3,
-    NOTE_DYNAMIC        => 4,
-    NOTE_TYPE           => 5,
-    NOTE_ACCENT         => 6,
-    NOTE_HAND           => 7,
-};
+my %CLASSES = (
+    'FICHIER GUITARE PRO v1'    => 'GuitarPro::Note::Note1',
+    'FICHIER GUITARE PRO v1.01' => 'GuitarPro::Note::Note1',
+    'FICHIER GUITARE PRO v1.02' => 'GuitarPro::Note::Note1',
+    'FICHIER GUITARE PRO v1.03' => 'GuitarPro::Note::Note1',
+    'FICHIER GUITARE PRO v1.04' => 'GuitarPro::Note::Note1',
+    'FICHIER GUITAR PRO v4.06' => 'GuitarPro::Note::Note4',
+);
 
-sub load($$$)
+sub load($$;$)
 {
-    my ($class, $binary_reader, $string) = @_;
+    my ($class, $binary_reader, $context) = @_; # context is some hash with version-specific data which is needed for loading
     die "Strange reader class" unless $binary_reader->isa('GuitarPro::BinaryReader');
-    my $note = {string => $string};
+    my $subclass = $CLASSES{$binary_reader->version()} or die "Reading note unimplemented for this version";
+    return $subclass->load($binary_reader, $context);
+}
 
-    my $header = $binary_reader->readByte();
-    my @bits = split "", unpack "b8", chr($header);
-    $note->{header} = [@bits];
 
-    if ($bits[NOTE_TYPE]) {
-        $note->{type} = $binary_reader->readByte(); # another lie from documentation, this is NOT short
-    }
-
-    if ($bits[NOTE_DURATION]) {
-        $note->{duration} = $binary_reader->readByte();
-        $note->{duration_tuplet} = $binary_reader->readByte();
-    }
-
-    if ($bits[NOTE_DYNAMIC]) {
-        $note->{dynamic} = $binary_reader->readByte();
-    } else {
-        $note->{dynamic} = 6; # forte
-    }
-
-    if ($bits[NOTE_TYPE]) {
-        $note->{fret} = $binary_reader->readByte();
-    }
-
-    if ($bits[NOTE_HAND]) {
-        $note->{left_land_finger} = $binary_reader->readByte();
-        $note->{right_land_finger} = $binary_reader->readByte();
-    }
-
-    if ($bits[NOTE_EFFECTS]) {
-        $note->{effects} = GuitarPro::NoteEffects->load($binary_reader);
-    }
-
-    return bless $note => $class;
+# TODO - lvalue?
+sub effects($;$)
+{
+    my ($self, $effects) = @_;
+    $self->{effects} = $effects if $effects;
+    return $self->{effects};
 }
 
 sub xml($)

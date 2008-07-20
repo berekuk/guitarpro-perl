@@ -4,14 +4,15 @@ use strict;
 use warnings;
 
 use GuitarPro::BinaryReader;
+use GuitarPro::Piece::Piece1;
 use GuitarPro::Piece::Piece4;
 
 our %KNOWN_VERSIONS = (
-    'FICHIER GUITAR PRO v1'    => 'GuitarPro::Piece::Piece1',
-    'FICHIER GUITAR PRO v1.01' => 'GuitarPro::Piece::Piece1',
-    'FICHIER GUITAR PRO v1.02' => 'GuitarPro::Piece::Piece1',
-    'FICHIER GUITAR PRO v1.03' => 'GuitarPro::Piece::Piece1',
-    'FICHIER GUITAR PRO v1.04' => 'GuitarPro::Piece::Piece1',
+    'FICHIER GUITARE PRO v1'    => 'GuitarPro::Piece::Piece1',
+    'FICHIER GUITARE PRO v1.01' => 'GuitarPro::Piece::Piece1',
+    'FICHIER GUITARE PRO v1.02' => 'GuitarPro::Piece::Piece1',
+    'FICHIER GUITARE PRO v1.03' => 'GuitarPro::Piece::Piece1',
+    'FICHIER GUITARE PRO v1.04' => 'GuitarPro::Piece::Piece1',
     'FICHIER GUITAR PRO v3.00' => 'GuitarPro::Piece::Piece3',
     'FICHIER GUITAR PRO v4.06' => 'GuitarPro::Piece::Piece4',
     'FICHIER GUITAR PRO v4.00' => 'GuitarPro::Piece::Piece4',

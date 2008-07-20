@@ -27,7 +27,7 @@ sub load($$)
 
     # other information about piece
     $self->{tempo} = $binary_reader->readInt();
-    $self->{info}->triple_feel($binary_reader->readInt());
+    $self->{info}->triplet_feel($binary_reader->readInt());
 
     if ($binary_reader->subversion > 2) {
         $self->{key} = $binary_reader->readInt();
@@ -62,13 +62,27 @@ sub load($$)
 
     if ($binary_reader->subversion > 2) {
         # skip 10 bytes (from tux-guitar source), what is this?
-        for (0..9) {
-            $binary_reader->readByte();
-        }
+        $binary_reader->skip(10);
     }
 
     ### BODY ###
-    die 'reading this version still not implemented';
+    for my $measure_id (0..($self->{measures_count} - 1)) {
+        my $measure = GuitarPro::Measure->load($binary_reader, {tracks => $self->{tracks}});
+        push @{$self->{measures}}, $measure;
+        for my $track_id (0..($self->{tracks_count}-1)) {
+            my $mtp;
+            eval {
+                $mtp = GuitarPro::MeasureTrackPair->load($binary_reader, {
+                    track_id => $track_id,
+                    measure_id => $measure_id,
+                    number_of_beats => $self->{measures}[$measure_id]{number_of_beats}[$track_id],
+                });
+            }; if ($@) {
+                die "Broken mtp[$measure_id, $track_id]: $@";
+            }
+            push @{$self->{mtp}}, $mtp;
+        }
+    }
     # TODO - track/measure pairs
 
     $self->fill_beat_sizes();
@@ -125,20 +139,12 @@ sub measure($$)
     return $self->{measures}[$id];
 }
 
-sub lyrics($)
-{
-    my ($self) = @_;
-    return $self->{lyrics};
-}
-
 sub xml($)
 {
     my ($self) = @_;
     my $xml = '<piece>';
     $xml .= "<version>".quote($self->version())."</version>";
     $xml .= $self->info->xml();
-
-    $xml .= $self->lyrics()->xml();
 
     $xml .= "<tempo>$self->{tempo}</tempo>";
     $xml .= "<key>$self->{key}</key>";

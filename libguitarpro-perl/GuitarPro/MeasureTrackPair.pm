@@ -5,12 +5,14 @@ use warnings;
 
 use GuitarPro::Beat;
 
-sub load($$$$)
+sub load($$$)
 {
-    my ($class, $binary_reader, $track_id, $measure_id) = @_;
+    my ($class, $binary_reader, $context) = @_;
     die "Strange reader class" unless $binary_reader->isa('GuitarPro::BinaryReader');
-    my $pair = {track_id => $track_id, measure_id => $measure_id};
-    $pair->{number_of_beats} = $binary_reader->readInt();
+    my $pair = {%$context}; # at least track_id + measure_id, optional number_of_beats
+    unless (exists $pair->{number_of_beats}) {
+        $pair->{number_of_beats} = $binary_reader->readInt();
+    }
     $pair->{beats} = [];
     for my $i (1..$pair->{number_of_beats}) {
         push @{$pair->{beats}}, GuitarPro::Beat->load($binary_reader);

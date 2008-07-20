@@ -3,87 +3,24 @@ package GuitarPro::Beat;
 use strict;
 use warnings;
 
-use GuitarPro::ChordDiagram;
-use GuitarPro::BeatEffects;
-use GuitarPro::MixTableChange;
-use GuitarPro::Note;
+use GuitarPro::Beat::Beat1;
+use GuitarPro::Beat::Beat4;
 
-use GuitarPro::Utils;
-
-use constant {
-    BEAT_DOTTED => 0,
-    BEAT_CHORD_DIAGRAM => 1,
-    BEAT_TEXT => 2,
-    BEAT_EFFECTS => 3,
-    BEAT_MIX_TABLE => 4,
-    BEAT_TUPLET => 5,
-    BEAT_STATUS => 6,
-};
-
-our %STATUSES = (
-    0   => 'empty',
-    2   => 'rest',
+my %CLASSES = (
+    'FICHIER GUITARE PRO v1'    => 'GuitarPro::Beat::Beat1',
+    'FICHIER GUITARE PRO v1.01' => 'GuitarPro::Beat::Beat1',
+    'FICHIER GUITARE PRO v1.02' => 'GuitarPro::Beat::Beat1',
+    'FICHIER GUITARE PRO v1.03' => 'GuitarPro::Beat::Beat1',
+    'FICHIER GUITARE PRO v1.04' => 'GuitarPro::Beat::Beat1',
+    'FICHIER GUITAR PRO v4.06' => 'GuitarPro::Beat::Beat4',
 );
 
-sub load($$)
+sub load($$;$)
 {
-    my ($class, $binary_reader) = @_;
+    my ($class, $binary_reader, $context) = @_; # context is some hash with version-specific data which is needed for loading
     die "Strange reader class" unless $binary_reader->isa('GuitarPro::BinaryReader');
-    my $beat = {};
-    my $header = $binary_reader->readByte();
-    my @bits = split "", unpack "b8", chr($header);
-    $beat->{header} = [@bits]; # TODO - define constants naming each flag
-
-    if ($bits[BEAT_STATUS]) {
-        my $status = $binary_reader->readUnsignedByte();
-        $beat->{status} = $STATUSES{$status} or die "Unknown beat status $beat->{status}";
-    }
-    $beat->{duration} = $binary_reader->readByte();
-    if ($bits[BEAT_TUPLET]) {
-        $beat->{tuplet} = $binary_reader->readInt();
-    }
-
-    if ($bits[BEAT_CHORD_DIAGRAM]) {
-        $beat->{chord_diagram} = GuitarPro::ChordDiagram->load($binary_reader);
-    }
-
-    if ($bits[BEAT_TEXT]) {
-        my $text_length = $binary_reader->readInt();
-        $beat->{text} = $binary_reader->readStringByte();
-    }
-
-    if ($bits[BEAT_EFFECTS]) {
-        $beat->{effects} = GuitarPro::BeatEffects->load($binary_reader);
-    }
-
-    if ($bits[BEAT_MIX_TABLE]) {
-        $beat->{mix_table_change} = GuitarPro::MixTableChange->load($binary_reader);
-    }
-
-    # from source of dguitar, again (specification is wrong here, it talks about one note)
-    my $strings_played = $binary_reader->readByte();
-    my @string_bits = split "", unpack "b8", chr($strings_played);
-    $beat->{strings} = [@string_bits];
-    $beat->{notes} = [];
-    my $number_of_strings = scalar grep { $_ } @string_bits;
-    for my $string (6,5,4,3,2,1,0) {
-        next unless $string_bits[$string];
-        push @{$beat->{notes}}, GuitarPro::Note->load($binary_reader, $string);
-    }
-
-    return bless $beat => $class;
-}
-
-sub duration($)
-{
-    my ($self) = @_;
-    return $self->{duration};
-}
-
-sub set_length($$)
-{
-    my ($self, $length) = @_;
-    $self->{length} = $length;
+    my $subclass = $CLASSES{$binary_reader->version()} or die "Reading beat unimplemented for this version";
+    return $subclass->load($binary_reader, $context);
 }
 
 sub xml($)
@@ -112,4 +49,3 @@ sub xml($)
 }
 
 1;
-

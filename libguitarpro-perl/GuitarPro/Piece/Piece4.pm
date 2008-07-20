@@ -69,7 +69,7 @@ sub load($$)
         for my $track_id (0..($self->{tracks_count}-1)) {
             my $mtp;
             eval {
-                $mtp = GuitarPro::MeasureTrackPair->load($binary_reader, $track_id, $measure_id);
+                $mtp = GuitarPro::MeasureTrackPair->load($binary_reader, {track_id => $track_id, measure_id => $measure_id});
             }; if ($@) {
                 die "Broken mtp[$measure_id, $track_id]: $@";
             }

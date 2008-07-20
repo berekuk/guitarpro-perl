@@ -58,6 +58,13 @@ sub readBytes($$)
     return $bytes;
 }
 
+sub readStringByteSized($)
+{
+    my ($self) = @_;
+    my $expected_length = $self->readUnsignedByte() - 1;
+    return $self->readStringByte($expected_length);
+}
+
 sub readStringByte($;$)
 {
     my ($self, $expected_length) = @_;
@@ -74,6 +81,14 @@ sub readStringInteger($)
     my $length = $self->readInt();
     my $string = $self->readBytes($length);
     return $string;
+}
+
+sub skip($$)
+{
+    my ($self, $count) = @_;
+    for (0..($count - 1)) {
+        $self->readByte();
+    }
 }
 
 sub position($)
