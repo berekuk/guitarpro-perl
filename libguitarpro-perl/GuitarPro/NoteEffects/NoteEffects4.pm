@@ -3,6 +3,8 @@ package GuitarPro::NoteEffects::NoteEffects4;
 use strict;
 use warnings;
 
+our @ISA = qw(GuitarPro::NoteEffects);
+
 use GuitarPro::Header;
 use GuitarPro::Bend;
 
